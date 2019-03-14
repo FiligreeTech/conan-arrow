@@ -29,7 +29,8 @@ conan_basic_setup()''')
             tools.replace_in_file("arrow/cpp/cmake_modules/ThirdpartyToolchain.cmake", "set(Boost_USE_STATIC_LIBS ON)", "set(Boost_USE_STATIC_LIBS OFF)")
 
     def configure_cmake(self):
-        cmake = CMake(self)
+        generator = "Ninja" if self.settings.os == "Windows" else None
+        cmake = CMake(self, generator=generator)
         cmake.vebose = True
         cmake.definitions["ARROW_BUILD_STATIC"]="ON"
         cmake.definitions["ARROW_BUILD_SHARED"]="OFF"
