@@ -25,6 +25,8 @@ class ArrowConan(ConanFile):
                               '''project(arrow VERSION "${ARROW_BASE_VERSION}")
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
+        if self.settings.os == "Windows":
+            tools.replace_in_file("arrow/cpp/cmake_modules/ThirdpartyToolchain.cmake", "set(Boost_USE_STATIC_LIBS ON)", "set(Boost_USE_STATIC_LIBS OFF)")
 
     def configure_cmake(self):
         cmake = CMake(self)
@@ -43,6 +45,9 @@ conan_basic_setup()''')
         cmake.definitions["ARROW_WITH_ZLIB"]="OFF"
         cmake.definitions["ARROW_WITH_ZSTD"]="OFF"
         cmake.definitions["ARROW_USE_GLOG"]="OFF"
+        if self.settings.os == "Windows":
+            cmake.definitions["CMAKE_BUILD_TYPE"]=str(self.settings.build_type)
+
         cmake.configure(source_folder="arrow/cpp")
         return cmake
 
