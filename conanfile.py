@@ -59,6 +59,9 @@ conan_basic_setup()''')
         self.configure_cmake().install()
 
     def package_info(self):
-        self.cpp_info.libs = ["arrow"]
+        if self.settings.os == "Windows":
+            self.cpp_info.libs = ["arrow_static"]
+        else:
+            self.cpp_info.libs = ["arrow"]
 
 
