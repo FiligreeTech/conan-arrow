@@ -12,7 +12,7 @@ class ArrowConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
-    requires="boost/1.68.0@conan/stable"
+    requires="boost/1.71.0@conan/stable"
 
     def source(self):
         self.run("git clone https://github.com/apache/arrow.git")
