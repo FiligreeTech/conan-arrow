@@ -3,7 +3,7 @@ from conans import ConanFile, CMake, tools
 
 class ArrowConan(ConanFile):
     name = "arrow"
-    version = "0.11.1"
+    version = "0.15.1"
     license = "Apache-2.0"
     url = "https://arrow.apache.org/"
     description = "Apache arrow"
@@ -63,5 +63,3 @@ conan_basic_setup()''')
             self.cpp_info.libs = ["arrow_static"]
         else:
             self.cpp_info.libs = ["arrow"]
-
-
