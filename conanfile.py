@@ -1,9 +1,8 @@
 from conans import ConanFile, CMake, tools
 
-
 class ArrowConan(ConanFile):
     name = "arrow"
-    version = "0.11.1"
+    version = "0.15.1"
     license = "Apache-2.0"
     url = "https://arrow.apache.org/"
     description = "Apache arrow"
@@ -12,21 +11,23 @@ class ArrowConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=False"
     generators = "cmake"
-    requires="boost/1.68.0@conan/stable"
+    requires="boost/1.71.0@conan/stable"
 
     def source(self):
         self.run("git clone https://github.com/apache/arrow.git")
-        self.run("cd arrow && git checkout apache-arrow-0.11.1")
+        self.run("cd arrow && git checkout apache-arrow-" + ArrowConan.version)
         # This small hack might be useful to guarantee proper /MT /MD linkage
         # in MSVC if the packaged project doesn't have variables to set it
         # properly
 
-        tools.replace_in_file("arrow/cpp/CMakeLists.txt", 'project(arrow VERSION "${ARROW_BASE_VERSION}")',
+        tools.replace_in_file("arrow/cpp/CMakeLists.txt",
+                              'project(arrow VERSION "${ARROW_BASE_VERSION}")',
                               '''project(arrow VERSION "${ARROW_BASE_VERSION}")
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
-        if self.settings.os == "Windows":
-            tools.replace_in_file("arrow/cpp/cmake_modules/ThirdpartyToolchain.cmake", "set(Boost_USE_STATIC_LIBS ON)", "set(Boost_USE_STATIC_LIBS OFF)")
+        tools.replace_in_file("arrow/cpp/cmake_modules/SetupCxxFlags.cmake",
+                              'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra -Wdocumentation',
+                              'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra')
 
     def configure_cmake(self):
         generator = "Ninja" if self.settings.os == "Windows" else None
@@ -63,5 +64,3 @@ conan_basic_setup()''')
             self.cpp_info.libs = ["arrow_static"]
         else:
             self.cpp_info.libs = ["arrow"]
-
-
