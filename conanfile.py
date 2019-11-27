@@ -16,7 +16,7 @@ class ArrowConan(ConanFile):
 
     def source(self):
         self.run("git clone https://github.com/apache/arrow.git")
-        self.run("cd arrow && git checkout apache-arrow-0.11.1")
+        self.run(f"cd arrow && git checkout apache-arrow-{version}")
         # This small hack might be useful to guarantee proper /MT /MD linkage
         # in MSVC if the packaged project doesn't have variables to set it
         # properly
