@@ -21,12 +21,12 @@ class ArrowConan(ConanFile):
         # in MSVC if the packaged project doesn't have variables to set it
         # properly
 
-        tools.replace_in_file("arrow/cpp/CMakeLists.txt", 'project(arrow VERSION "${ARROW_BASE_VERSION}")',
+        tools.replace_in_file("cpp/CMakeLists.txt", 'project(arrow VERSION "${ARROW_BASE_VERSION}")',
                               '''project(arrow VERSION "${ARROW_BASE_VERSION}")
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
         if self.settings.os == "Windows":
-            tools.replace_in_file("arrow/cpp/cmake_modules/ThirdpartyToolchain.cmake", "set(Boost_USE_STATIC_LIBS ON)", "set(Boost_USE_STATIC_LIBS OFF)")
+            tools.replace_in_file("cpp/cmake_modules/ThirdpartyToolchain.cmake", "set(Boost_USE_STATIC_LIBS ON)", "set(Boost_USE_STATIC_LIBS OFF)")
 
     def configure_cmake(self):
         generator = "Ninja" if self.settings.os == "Windows" else None
@@ -49,7 +49,7 @@ conan_basic_setup()''')
         if self.settings.os == "Windows":
             cmake.definitions["CMAKE_BUILD_TYPE"]=str(self.settings.build_type)
 
-        cmake.configure(source_folder="arrow/cpp")
+        cmake.configure(source_folder="cpp")
         return cmake
 
     def build(self):
