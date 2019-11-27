@@ -24,8 +24,8 @@ class ArrowConan(ConanFile):
                               '''project(arrow VERSION "${ARROW_BASE_VERSION}")
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
-        if self.settings.os == "Windows":
-            tools.replace_in_file("arrow/cpp/cmake_modules/ThirdpartyToolchain.cmake", "set(Boost_USE_STATIC_LIBS ON)", "set(Boost_USE_STATIC_LIBS OFF)")
+        #if self.settings.os == "Windows":
+        #    tools.replace_in_file("arrow/cpp/cmake_modules/ThirdpartyToolchain.cmake", "set(Boost_USE_STATIC_LIBS ON)", "set(Boost_USE_STATIC_LIBS OFF)")
 
     def configure_cmake(self):
         generator = "Ninja" if self.settings.os == "Windows" else None
