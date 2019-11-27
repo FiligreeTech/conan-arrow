@@ -30,7 +30,7 @@ conan_basic_setup()''')
                               'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra -Wdocumentation',
                               'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra')
 
-        tools.replace_in_file("arrow/cpp/cmake_modules/ThirdpartyToolchain.cmake",
+        tools.replace_in_file("arrow/cpp/cmake_modules/DefineOptions.cmake",
                               'define_option(ARROW_JEMALLOC "Build the Arrow jemalloc-based allocator" ON)',
                               'define_option(ARROW_JEMALLOC "Build the Arrow jemalloc-based allocator" OFF)')
 
