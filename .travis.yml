@@ -2,7 +2,7 @@ env:
    global:
      - CONAN_USERNAME: "filigreetech"
      - CONAN_LOGIN_USERNAME: "filigreeconanbot"
-     - CONAN_CHANNEL: "testing"
+     - CONAN_CHANNEL: "stable"
      - CONAN_UPLOAD: "https://api.bintray.com/conan/filigreetech/conan-pkg"
      - CONAN_ARCHS: "x86_64"
 

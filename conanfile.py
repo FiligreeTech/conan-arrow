@@ -16,15 +16,13 @@ class ArrowConan(ConanFile):
     def source(self):
         self.run("git clone https://github.com/apache/arrow.git")
         self.run("cd arrow && git checkout apache-arrow-" + ArrowConan.version)
-        # This small hack might be useful to guarantee proper /MT /MD linkage
-        # in MSVC if the packaged project doesn't have variables to set it
-        # properly
 
         tools.replace_in_file("arrow/cpp/CMakeLists.txt",
                               'project(arrow VERSION "${ARROW_BASE_VERSION}")',
                               '''project(arrow VERSION "${ARROW_BASE_VERSION}")
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
+
         tools.replace_in_file("arrow/cpp/cmake_modules/SetupCxxFlags.cmake",
                               'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra -Wdocumentation',
                               'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra')
@@ -33,6 +31,7 @@ conan_basic_setup()''')
         generator = "Ninja" if self.settings.os == "Windows" else None
         cmake = CMake(self, generator=generator)
         cmake.vebose = True
+        cmake.definitions["ARROW_JEMALLOC"]="OFF"
         cmake.definitions["ARROW_BUILD_STATIC"]="ON"
         cmake.definitions["ARROW_BUILD_SHARED"]="OFF"
         cmake.definitions["ARROW_BUILD_TESTS"]="OFF"
