@@ -27,14 +27,11 @@ conan_basic_setup()''')
                               'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra -Wdocumentation',
                               'set(CXX_COMMON_FLAGS "${CXX_COMMON_FLAGS} -Wall -Wextra')
 
-        tools.replace_in_file("arrow/cpp/cmake_modules/DefineOptions.cmake",
-                              'define_option(ARROW_JEMALLOC "Build the Arrow jemalloc-based allocator" ON)',
-                              'define_option(ARROW_JEMALLOC "Build the Arrow jemalloc-based allocator" OFF)')
-
     def configure_cmake(self):
         generator = "Ninja" if self.settings.os == "Windows" else None
         cmake = CMake(self, generator=generator)
         cmake.vebose = True
+        cmake.definitions["ARROW_JEMALLOC"]="OFF"
         cmake.definitions["ARROW_BUILD_STATIC"]="ON"
         cmake.definitions["ARROW_BUILD_SHARED"]="OFF"
         cmake.definitions["ARROW_BUILD_TESTS"]="OFF"
