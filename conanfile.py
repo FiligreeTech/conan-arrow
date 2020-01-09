@@ -14,6 +14,8 @@ class ArrowConan(ConanFile):
     requires="boost/1.71.0@conan/stable"
 
     def source(self):
+        if self.settings.os == "Linux":
+            self.run("sudo apt update && sudo apt install -y flex bison")
         self.run("git clone https://github.com/apache/arrow.git")
         self.run("cd arrow && git checkout apache-arrow-" + ArrowConan.version)
 
@@ -33,6 +35,8 @@ conan_basic_setup()''')
         cmake.vebose = True
         cmake.definitions["ARROW_JEMALLOC"]="OFF"
         cmake.definitions["ARROW_BUILD_STATIC"]="ON"
+        if self.settings.os == "Linux":
+            cmake.definitions["ARROW_PARQUET"]="ON"
         cmake.definitions["ARROW_BUILD_SHARED"]="OFF"
         cmake.definitions["ARROW_BUILD_TESTS"]="OFF"
         cmake.definitions["ARROW_BOOST_USE_SHARED"]="OFF"
