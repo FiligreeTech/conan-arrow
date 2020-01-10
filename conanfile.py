@@ -65,5 +65,7 @@ conan_basic_setup()''')
     def package_info(self):
         if self.settings.os == "Windows":
             self.cpp_info.libs = ["arrow_static"]
+        elif self.settings.os == "Linux":
+            self.cpp_info.libs = ["arrow", "parquet"]
         else:
             self.cpp_info.libs = ["arrow"]
